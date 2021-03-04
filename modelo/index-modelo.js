@@ -1,0 +1,3 @@
+/*
+aqui iran las funciones que llegan del controlador y las conectamos con la bd
+*/
