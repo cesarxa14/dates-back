@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const db = require('./bd/index-bd');
+const db = require('./src/bd/index-bd');
 const path = require('path');
 const cors = require('cors');
 
@@ -8,11 +8,11 @@ const cors = require('cors');
 db.connectDB();
 app.use(cors());
 
-//declaramos 'port' como variable con valor 3000 por defecto 
+//declaramos 'port' como variable con valor 3000 por defecto
 app.set('port', process.env.PORT || 3000);
-app.use(express.json()); 
+app.use(express.json());
 //usamos el archivo index-rutas.js donde estaran todas las rutas
-app.use(require('./rutas/index-rutas'));
+app.use(require('./src/rutas/index-rutas'));
 
 //levantamos el servidor
 app.listen(app.get('port'), ()=>{
