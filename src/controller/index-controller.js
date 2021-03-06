@@ -11,7 +11,7 @@ async function login(req,res){
         if(!password) throw { msj: 'Contraseña inválida', status: 400};
         let login = await model.login(usuario, password);
         console.log(login)
-        //status = 1 es error y retornara un mensaje de error enviado desde la bd
+        //status = 1 es error y retornara un mensaje de error enviado desde la bd 
         if(login.status == 1){
             let obj = {
                 status: login.status,
