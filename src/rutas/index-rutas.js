@@ -1,8 +1,13 @@
 const {Router} = require('express');
 const router = Router();
-const controller = require('../controller/index-controlador');
+const Auth = require('../auth/index-auth')
+const controller = require('../controller/index-controller');
+
+
+router.post('/login', controller.login);
 
 /*
+router.get('/home', Auth.ensureToken, controller.login())
 aqui iran las rutas post, get, delete, update, etc
 
 */
