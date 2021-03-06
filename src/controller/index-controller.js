@@ -19,7 +19,11 @@ async function login(req,res){
             }
             return res.send(obj);
         } else{ // si el status no es 1 entonces la funcion se ejecuto correctamente y ahora si se puede generar un token
-            const token = jwt.sign(req.body, 'my_secret_key', {expiresIn: 60 * 60 * 24 });
+            let login = {
+                usuario: usuario,
+                password: password
+            }
+            const token = jwt.sign(login, 'my_secret_key', {expiresIn: 60 * 60 * 24 });
             console.log(token)
             let obj = {
                 token: token,
