@@ -3,15 +3,16 @@ const model = require('../model/index-modelo');
 
 async function login(req,res){
     try{
-        return res.send({msj:'Ingresaste'});
-        // console.log(req.body.password)
+        // return res.send({msj:'Ingresaste'});
+        console.log(req.body)
         let usuario = req.body.usuario;
         let password = req.body.password;
         //se valida que exista el usuario y contraseña sino emite un mensaje con estado de error
         if(!usuario) throw { msj: 'Usuario inválido', status: 400};
         if(!password) throw { msj: 'Contraseña inválida', status: 400};
         let login = await model.login(usuario, password);
-        console.log(login)
+        console.log('controler',login)
+        return res.send(login)
         //status = 1 es error y retornara un mensaje de error enviado desde la bd 
         if(login.status == 1){
             let obj = {
