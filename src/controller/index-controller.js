@@ -3,6 +3,7 @@ const model = require('../model/index-modelo');
 
 async function login(req,res){
     try{
+        return res.send({msj:'Ingresaste'});
         // console.log(req.body.password)
         let usuario = req.body.usuario;
         let password = req.body.password;
