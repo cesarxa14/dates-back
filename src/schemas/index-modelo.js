@@ -1,0 +1,3 @@
+/*
+aqui iran las funciones que llegan del controller y las conectamos con la db
+*/
