@@ -6,6 +6,7 @@ class UsersService {
     }
 
     login(usuario, contraseña) {
+        console.log('fdfds')
         return new Promise(async (resolve, reject)=>{
             let sql = 'SELECT public.__dates_1_login($1, $2) res'; //crear funcion de crear noticia en pgadmin
             sql = await global.pgp.as.format(sql,[usuario, contraseña]);
@@ -19,10 +20,10 @@ class UsersService {
                 return reject(err);
             });
         })
-
     }
 }
 
+// export {UsersService}
 module.exports = {
     UsersService
 }
