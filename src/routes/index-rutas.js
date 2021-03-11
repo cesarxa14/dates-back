@@ -10,6 +10,7 @@ router.post('/register', controller.register);
 
 router.get('/getEspecialidad', controller.getEspecialidad);
 
+
 /*
 router.get('/home', Auth.ensureToken, controller.login())
 aqui iran las routes post, get, delete, update, etc
