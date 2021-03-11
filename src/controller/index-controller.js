@@ -1,4 +1,4 @@
-const model = require('../schemas/index-modelo');
+const model = require('../utils/schemas/index-modelo');
 
 async function login(req,res){
     try{
