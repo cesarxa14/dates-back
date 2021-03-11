@@ -6,6 +6,7 @@ const consultantController = require('../controller/consultantController');
 
 
 router.post('/login', controller.login);
+router.post('/register', controller.register)
 
 /*
 router.get('/home', Auth.ensureToken, controller.login())

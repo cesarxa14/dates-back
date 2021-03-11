@@ -1,17 +1,21 @@
-const model = require('../utils/schemas/index-modelo');
+// const model = require('../schemas/index-modelo');
+const {UsersService} = require('../services/usersService');
+const modelUsers = new UsersService();
 
 async function login(req,res){
     try{
+
         // return res.send({msj:'Ingresaste'});
-        console.log(req.body)
+        console.log('fdsfds',req.body)
         let usuario = req.body.usuario;
         let password = req.body.password;
         //se valida que exista el usuario y contraseña sino emite un mensaje con estado de error
         if(!usuario) throw { msj: 'Usuario inválido', status: 400};
         if(!password) throw { msj: 'Contraseña inválida', status: 400};
-        let login = await model.login(usuario, password);
-        console.log('controler',login)
+        let login = await modelUsers.login(usuario, password);
+        // console.log('controler')
         return res.send(login)
+
         //status = 1 es error y retornara un mensaje de error enviado desde la bd
         if(login.status == 1){
             let obj = {
@@ -40,6 +44,15 @@ async function login(req,res){
     }
 }
 
+async function register(req,res){
+    try{
+        console.log(req.body)
+    }catch(err){
+
+    }
+}
+
 module.exports = {
-    login
+    login,
+    register
 }
