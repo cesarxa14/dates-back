@@ -6,31 +6,18 @@ const modelUsers = new UsersService();
 
 async function login(req,res){
     try{
-<<<<<<< HEAD
         
         // return res.send({msj:'Ingresaste'});
         console.log('fdsfds',req.body)
         let correo = req.body.correo;
-=======
-        // return res.send({msj:'Ingresaste'});
-        console.log(req.body)
-        let usuario = req.body.usuario;
->>>>>>> d71dcb5609697bbfed0782d7ca35d744cf8ce387
         let password = req.body.password;
         //se valida que exista el usuario y contraseña sino emite un mensaje con estado de error
         if(!correo) throw { msj: 'Usuario inválido', status: 400};
         if(!password) throw { msj: 'Contraseña inválida', status: 400};
-<<<<<<< HEAD
         let login = await modelUsers.login(correo, password);
         console.log('controler', login)
         
         //status = 1 es error y retornara un mensaje de error enviado desde la bd
-=======
-        let login = await model.login(usuario, password);
-        console.log('controler',login)
-        return res.send(login)
-        //status = 1 es error y retornara un mensaje de error enviado desde la bd 
->>>>>>> d71dcb5609697bbfed0782d7ca35d744cf8ce387
         if(login.status == 1){
             let obj = {
                 status: login.status,
