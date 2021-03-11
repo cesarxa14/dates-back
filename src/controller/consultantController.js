@@ -20,7 +20,20 @@ function consultantController(app) {
     router.get( "/" , async function(req, res, next){
         const consultants = consultantsService.getConsultants()
             .then(rows => res.json(rows) )
-            .catch(err => console.log(err));
+            .catch(err => next(err));
+
+    })
+
+    router.get( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'),  function(req, res, next){
+        const { consultantId } = req.params;
+
+        const consultant = consultantsService.getConsultantById(consultantId)
+            .then(row => row.length > 0 ? res.status(200).json({
+                data: row
+            }): res.status(200).json({
+                message: "Consultant id does not exist"
+            }))
+            .catch(err => next(err));
 
     })
 
@@ -31,9 +44,23 @@ function consultantController(app) {
             .then(row => res.status(200).json({
                 message: "Consultant created successfully"
             }) )
-            .catch(err => console.log(err));
+            .catch(err => next(err));
 
     })
+
+    router.put( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'), validationHandler(updateConsultantSchema) , function(req, res, next){
+        const { consultantId } = req.params;
+        const { body: consultant } = req;
+
+        const updatedConsultant = consultantsService.updateConsultant(consultantId, { consultant })
+            .then(row => res.status(200).json({
+                message: "Consultant updated successfully",
+                data: row
+            }) )
+            .catch(err => next(err));
+
+    })
+
 }
 
 module.exports = {
