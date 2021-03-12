@@ -88,7 +88,12 @@ async function register(req,res){
         } else{ // si el status no es 1 entonces la funcion se ejecuto correctamente y ahora si se puede generar un token
             console.log('30');
             const token = jwt.sign(register.metadata, 'my_secret_key', {expiresIn: 60 * 60 * 24 });
-            let email = await verificacionEmail(correo);
+            let objEmail = {
+                nombres: nombres,
+                apellido_pa: apellido_pa,
+                correoDestino: correo
+            }
+            let email = await verificacionEmail(objEmail);
             console.log(email)
             
             let obj = {
@@ -106,17 +111,36 @@ async function register(req,res){
     }
 }
 
-async function verificacionEmail(correo){
+async function verificacionEmail(obj){
     try{
         
         console.log('43');
+        let cuerpoEmail = `
+        <div style="width:100%;height:320px; background-color:EAECF6;text-align:center;border-radius:30px">
+            <div style="background-color:0D1649;border-radius:30px">
+                <h1 style="text-align:center; color:white">GRACIAS ${obj.nombres} ${obj.apellido_pa}!</h1>
+                <h3 style="text-align:center; color:white">Ya casi formas parte de nosotros</h3>
+            </div>
+        
+            <div style="width:80%;height:100;margin-left:10%; background-color:C3C6D7;text-align:center; border-radius: 20px">
+                <h2>Verifica tu correo electrónico</h2>
+                <button style="padding: 10px; font-weight: 600; font-size: 20px; color: #ffffff;background-color: #1883ba; border-radius: 6px;border: 1px solid #000000;">
+                    <a style="text-decoration:none;color:white" href="https://www.google.com">
+                    Confirmar cuenta
+                    </a>
+                </button>
+            </div>
+            <h5 style="padding:10px 40px 20px 30px">
+                Verifique su dirección de correo electrónico para acceder a su cuenta y comenzas a usar Dates!</h5>
+            <h5 style="float:right">Dates 2021</h5>
+      </div>
+      `
         let info = await transporter.sendMail({
             from: 'Dates Asesorias <asesorias.app2021@gmail.com>',
-            to: correo,
+            to: obj.correoDestino,
             subject: 'Verificación de cuenta',
             text: 'Aca iria el link de confirmacion',
-            html: `<h1>Aqui iria el link de confirmacion</h1>
-                    <h2>Asesorias 2021</h2>`
+            html: cuerpoEmail
         }, (error, info)=>{
             if(error){
                 // res.status(500).send(error.message);
