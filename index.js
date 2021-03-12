@@ -14,9 +14,6 @@ app.use(cors());
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
-// xrqcciorabboyzhb contraseña gmail app
-const nodemailer = require('nodemailer');
-const {google} = require('googleapis');
 
 //usamos el archivo index-routes.js donde estaran todas las routes
 app.use(require('./src/routes/index-rutas'));
