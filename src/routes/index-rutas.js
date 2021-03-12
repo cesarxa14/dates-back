@@ -2,7 +2,7 @@ const {Router} = require('express');
 const router = Router();
 const Auth = require('../auth/index-auth')
 const controller = require('../controller/index-controller');
-
+const consultantController = require('../controller/consultantController');
 
 
 router.post('/login', controller.login);

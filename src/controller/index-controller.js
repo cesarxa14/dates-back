@@ -8,7 +8,7 @@ const { transporter} = require('../config/mailer')
 
 async function login(req,res){
     try{
-        
+
         // return res.send({msj:'Ingresaste'});
         console.log('fdsfds',req.body)
         let correo = req.body.correo;
