@@ -1,8 +1,10 @@
 // const model = require('../schemas/index-modelo');
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 const _encryptor = require('simple-encryptor')('secret_server_key');
 const {UsersService} = require('../services/usersService');
 const modelUsers = new UsersService();
+const { transporter} = require('../config/mailer')
 
 async function login(req,res){
     try{
@@ -86,7 +88,9 @@ async function register(req,res){
         } else{ // si el status no es 1 entonces la funcion se ejecuto correctamente y ahora si se puede generar un token
             console.log('30');
             const token = jwt.sign(register.metadata, 'my_secret_key', {expiresIn: 60 * 60 * 24 });
-            // console.log(token)
+            let email = await verificacionEmail(correo);
+            console.log(email)
+            
             let obj = {
                 token: token,
                 status: register.status,
@@ -99,6 +103,34 @@ async function register(req,res){
        
     }catch(err){
 
+    }
+}
+
+async function verificacionEmail(correo){
+    try{
+        
+        console.log('43');
+        let info = await transporter.sendMail({
+            from: 'Dates Asesorias <asesorias.app2021@gmail.com>',
+            to: correo,
+            subject: 'Verificación de cuenta',
+            text: 'Aca iria el link de confirmacion',
+            html: `<h1>Aqui iria el link de confirmacion</h1>
+                    <h2>Asesorias 2021</h2>`
+        }, (error, info)=>{
+            if(error){
+                // res.status(500).send(error.message);
+                throw {msj: 'Error'}
+            }else{
+                console.log('email enviado', info);
+                // res.status(200).json({messageId});
+                return info.messageId;
+            }
+        });
+
+     
+    }catch(err){
+        console.log(err);
     }
 }
 
@@ -119,5 +151,6 @@ async function getEspecialidad(req,res){
 module.exports = {
     login,
     register,
+    verificacionEmail,
     getEspecialidad
 }
