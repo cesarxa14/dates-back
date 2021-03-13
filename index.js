@@ -14,6 +14,7 @@ app.use(cors());
 app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
+
 //usamos el archivo index-routes.js donde estaran todas las routes
 app.use(require('./src/routes/index-rutas'));
 consultantController(app);
