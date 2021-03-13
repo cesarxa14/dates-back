@@ -8,6 +8,7 @@ const consultantController = require('../controller/consultantController');
 router.post('/login', controller.login);
 router.post('/register', controller.register);
 router.post('/verificacionEmail', controller.verificacionEmail);
+router.get('/verifyEmail/:token', controller.verificarTokenEmail);
 
 router.get('/getEspecialidad', controller.getEspecialidad);
 

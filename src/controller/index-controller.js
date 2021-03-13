@@ -45,7 +45,32 @@ async function login(req,res){
         console.log(err);
     }
 }
+async function verificarTokenEmail(req,res){
+    try{
+        
+        let token = req.params.token;
+        console.log(token)
+        jwt.verify(token,'my_secret_key', (err, data)=>{
+            if(err){
+                console.log('Error al obtener el token');
+            }else{
+                console.log('usuario',data);
+                let confirm = modelUsers.confirmarEmail(data.id_persona);
+                if(data.id_rol ===1){
+                    res.redirect('http://localhost:4200/home-cliente');
+                }else if(data.id_rol === 2){
+                    res.redirect('http://localhost:4200/home-asesor');
+                }
+                
+            }
+        })  
+           
+        
+        res.send({email:'confirmed'})
+    }catch(err){
 
+    }
+}
 async function register(req,res){
     try{
         let nombres = req.body.nombres;
@@ -91,7 +116,8 @@ async function register(req,res){
             let objEmail = {
                 nombres: nombres,
                 apellido_pa: apellido_pa,
-                correoDestino: correo
+                correoDestino: correo,
+                token: token
             }
             let email = await verificacionEmail(objEmail);
             console.log(email)
@@ -125,7 +151,7 @@ async function verificacionEmail(obj){
             <div style="width:80%;height:100;margin-left:10%; background-color:C3C6D7;text-align:center; border-radius: 20px">
                 <h2>Verifica tu correo electrónico</h2>
                 <button style="padding: 10px; font-weight: 600; font-size: 20px; color: #ffffff;background-color: #1883ba; border-radius: 6px;border: 1px solid #000000;">
-                    <a style="text-decoration:none;color:white" href="https://www.google.com">
+                    <a style="text-decoration:none;color:white" href="http://localhost:3000/verifyEmail/${obj.token}">
                     Confirmar cuenta
                     </a>
                 </button>
@@ -157,10 +183,12 @@ async function verificacionEmail(obj){
         console.log(err);
     }
 }
-
+const { uuid} = require('uuidv4')
 async function getEspecialidad(req,res){
     try{
         const especialidad = await modelUsers.getEspecialidad();
+        let rand= uuid();
+        console.log('numero random',rand);
         especialidad.map(row=>{
             return row.id_especialidad = _encryptor.encrypt(row.id_especialidad);
         })
@@ -176,5 +204,6 @@ module.exports = {
     login,
     register,
     verificacionEmail,
+    verificarTokenEmail,
     getEspecialidad
 }
