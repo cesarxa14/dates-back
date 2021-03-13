@@ -151,7 +151,7 @@ async function verificacionEmail(obj){
             <div style="width:80%;height:100;margin-left:10%; background-color:C3C6D7;text-align:center; border-radius: 20px">
                 <h2>Verifica tu correo electrónico</h2>
                 <button style="padding: 10px; font-weight: 600; font-size: 20px; color: #ffffff;background-color: #1883ba; border-radius: 6px;border: 1px solid #000000;">
-                    <a style="text-decoration:none;color:white" href="http://localhost:3000/verifyEmail/${obj.token}">
+                    <a style="text-decoration:none;color:white" target="_blank" href="http://localhost:3000/verifyEmail/${obj.token}">
                     Confirmar cuenta
                     </a>
                 </button>
