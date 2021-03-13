@@ -25,11 +25,23 @@ class ConsultantsService {
         return createdConsultant;
     }
 
-    async updateConsultant(id, { consultant }) {
-        const query = `UPDATE public.consulta SET ${consultant.idPerson != undefined ?  `_id_persona=${consultant.idPerson},`: ''  } ${consultant.title != undefined ?  `titulo='${consultant.title}',`: ''  } ${consultant.description != undefined ?  `descripcion='${consultant.description},'`: ''  } ${consultant.specialityId != undefined ?  `_id_especialidad=${consultant.specialityId},`: ''  } ${consultant.photo != undefined ?  `foto_consulta='${consultant.photo}',`: ''  } ${consultant.price != undefined ?  `monto=${consultant.price}`: ''  } WHERE id_consulta=${id};`;
+    async updateConsultant(consultantId, { consultant }) {
+        const query = `UPDATE public.consulta SET ${consultant.idPerson != undefined ?  `_id_persona=${consultant.idPerson},`: ''  } ${consultant.title != undefined ?  `titulo='${consultant.title}',`: ''  } ${consultant.description != undefined ?  `descripcion='${consultant.description},'`: ''  } ${consultant.specialityId != undefined ?  `_id_especialidad=${consultant.specialityId},`: ''  } ${consultant.photo != undefined ?  `foto_consulta='${consultant.photo}',`: ''  } ${consultant.price != undefined ?  `monto=${consultant.price}`: ''  } WHERE id_consulta=${consultantId};`;
         const updatedConsultant = global.dbp.any(query);
 
         return updatedConsultant;
+    }
+
+    async deleteConsultant(consultantId) {
+        const query = `DELETE FROM public.consulta WHERE id_consulta=${consultantId};`;
+        const deletedConsultant = this.getConsultantById(consultantId)
+            .then( row => new Promise(
+                    (resolve, reject) => row.length > 0 ?
+                        resolve(global.dbp.any(query)) :
+                        reject(`Id:  ${consultantId} does not exist`)))
+
+
+        return deletedConsultant;
     }
 }
 

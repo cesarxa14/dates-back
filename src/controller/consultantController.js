@@ -41,7 +41,7 @@ function consultantController(app) {
         const { body: consultant } = req;
 
         const createdConsultant = consultantsService.createConsultant({consultant})
-            .then(row => res.status(200).json({
+            .then(row => res.status(201).json({
                 message: "Consultant created successfully"
             }) )
             .catch(err => next(err));
@@ -53,13 +53,25 @@ function consultantController(app) {
         const { body: consultant } = req;
 
         const updatedConsultant = consultantsService.updateConsultant(consultantId, { consultant })
-            .then(row => res.status(200).json({
+            .then(row => res.status(202).json({
                 message: "Consultant updated successfully",
                 data: row
             }) )
             .catch(err => next(err));
 
     })
+
+    router.delete("/:consultantId", validationHandler({consultantId: consultantIdSchema}, 'params'), function(req,res,next){
+       const { consultantId } = req.params;
+
+       const deletedConsultant = consultantsService.deleteConsultant(consultantId)
+           .then(value => res.status(200).json({
+               message: "Consultant deleted successfully",
+               data: value
+           }))
+           .catch(err => next(err));
+    });
+
 
 }
 
