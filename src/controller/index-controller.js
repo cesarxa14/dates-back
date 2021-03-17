@@ -184,18 +184,43 @@ async function verificacionEmail(obj){
         console.log(err);
     }
 }
-const { uuid} = require('uuidv4')
-async function getEspecialidad(req,res){
+
+
+async function getRoles(req,res){
     try{
-        const especialidad = await modelUsers.getEspecialidad();
-        let rand= uuid();
-        console.log('numero random',rand);
-        especialidad.map(row=>{
-            return row.id_especialidad = _encryptor.encrypt(row.id_especialidad);
+        const rol = await modelUsers.getRoles();
+        rol.map(row=>{
+            return row.id_rol = _encryptor.encrypt(row.id_rol);
         })
+        console.log(rol)
+        res.send(rol)
+    }catch(err){
+
+    }
+}
+
+async function getEspecialidades(req,res){
+    try{
+        const especialidad = await modelUsers.getEspecialidades();
         res.send(especialidad)
     }catch(err){
 
+    }
+}
+
+async function switchedAsesorOnline(req, res) {
+    try{
+        console.log(req.body);
+        let id_user = req.body.id_user;
+        let flag_online = req.body.flag_online;
+
+        id_user = _encryptor.decrypt(id_user);
+        console.log(id_user)
+        const flg_online = await modelUsers.switchedAsesorOnline(id_user, flag_online);
+        
+        res.send({message:'toggle cambio'})
+    }catch(err){
+        console.log(err);
     }
 }
 
@@ -206,5 +231,7 @@ module.exports = {
     register,
     verificacionEmail,
     verificarTokenEmail,
-    getEspecialidad
+    getRoles,
+    getEspecialidades,
+    switchedAsesorOnline
 }

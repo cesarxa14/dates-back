@@ -10,7 +10,11 @@ router.post('/register', controller.register);
 router.post('/verificacionEmail', controller.verificacionEmail);
 router.get('/verifyEmail/:token', controller.verificarTokenEmail);
 
-router.get('/getEspecialidad', controller.getEspecialidad);
+router.get('/getRoles', controller.getRoles);
+router.get('/getEspecialidades', controller.getEspecialidades);
+
+router.post('/switchedAsesorOnline', controller.switchedAsesorOnline);
+
 
 
 /*
