@@ -31,6 +31,7 @@ async function login(req,res){
             console.log('30');
             const token = jwt.sign(login.metadata, 'my_secret_key', {expiresIn: 60 * 60 * 24 });
             // console.log(token)
+            login.metadata.id_persona = _encryptor.encrypt(login.metadata.id_persona); 
             let obj = {
                 token: token,
                 status: login.status,
@@ -121,7 +122,7 @@ async function register(req,res){
             }
             let email = await verificacionEmail(objEmail);
             console.log(email)
-            
+            register.metadata.id_persona = _encryptor.encrypt(register.metadata.id_persona);
             let obj = {
                 token: token,
                 status: register.status,
