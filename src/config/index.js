@@ -8,7 +8,12 @@ const config = {
     dbPassword: process.env.DB_PASSWORD,
     dbHost: process.env.DB_HOST,
     dbName: process.env.DB_NAME,
-    dbPort: process.env.DB_PORT
+    dbPort: process.env.DB_PORT,
+    dbDialect: process.env.DBDialect,
+    max: process.env.MAX,
+    min: process.env.MIN,
+    acquire: process.env.ACQUIRE,
+    idle: process.env.IDLE
 }
 
 module.exports = { config };
