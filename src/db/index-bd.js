@@ -1,4 +1,5 @@
 const { config } = require('../config');
+
 function connectDB(){
     return new Promise(async (resolve, reject)=>{
         global.pgp = require('pg-promise')({noWarnings: false});

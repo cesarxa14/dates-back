@@ -5,8 +5,8 @@ const consultantIdPerson = joi.number() //.regex(/`[0-9a-fA-F]{24}`/);
 const consultantTitleSchema = joi.string().max(100);
 const consultantDescriptionSchema = joi.string().max(500);
 const consultantSpecialityIdSchema = joi.number() //.regex(/`[0-9a-fA-F]{24}`/);
-const consultantPhotoSchema = joi.string().max(300);
-const consultantPriceSchema = joi.number()
+const consultantPhotoSchema = joi.any();
+const consultantPriceSchema = joi.number();
 
 const createConsultantSchema = {
     idPerson: consultantIdPerson.required(),

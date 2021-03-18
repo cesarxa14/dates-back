@@ -22,7 +22,7 @@ class UsersService {
 
     register(obj) {
         return new Promise(async (resolve, reject)=>{
-            let sql = 'SELECT public.__dates_2_register($1, $2, $3, $4, $5, $6, $7) res'; 
+            let sql = 'SELECT public.__dates_2_register($1, $2, $3, $4, $5, $6, $7) res';
             sql = await global.pgp.as.format(sql,[obj.nombres, obj.apellido_pa, obj.apellido_ma, obj.fecha_naci, obj.tipo_usuario, obj.correo, obj.password]);
             console.log('sql->>>', sql);
             global.dbp.one(sql).then(data=>{
@@ -35,7 +35,7 @@ class UsersService {
         })
     }
 
-    
+
 
     getEspecialidad() {
         return new Promise(async (resolve, reject)=>{

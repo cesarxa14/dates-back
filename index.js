@@ -1,11 +1,18 @@
 const express = require('express');
-const app = express();
 const db = require('./src/db/index-bd');
-const path = require('path');
 const cors = require('cors');
+const formData = require("express-form-data");
+const os = require("os");
 const { consultantController } = require("./src/controller/consultantController");
 const { logErrors, wrapError, errorHandler } = require('./src/utils/middleware/errorHandlers');
 const { notFoundHandler } = require('./src/utils/middleware/notFoundHandler');
+const options = {
+    uploadDir: './public/uploads',
+    //autoClean: true
+};
+
+//Instanciamos app con express
+const app = express();
 
 //primero nos conectamos a la base de datos
 db.connectDB();
@@ -13,8 +20,18 @@ app.use(cors());
 
 //declaramos 'port' como variable con valor 3000 por defecto
 app.set('port', process.env.PORT || 3000);
+//Agregamos handler para recibir json
 app.use(express.json());
 
+
+// parse data with connect-multiparty.
+app.use(formData.parse(options));
+// delete from the request all empty files (size == 0)
+//app.use(formData.format());
+// change the file objects to fs.ReadStream
+//app.use(formData.stream());
+// union the body and the files
+app.use(formData.union());
 
 //usamos el archivo index-routes.js donde estaran todas las routes
 app.use(require('./src/routes/index-rutas'));

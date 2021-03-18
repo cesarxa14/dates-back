@@ -1,6 +1,5 @@
-//const model = require('../schemas/consultantModel');
-
 const express = require("express");
+const upload = require("../config/multer.config");
 const { ConsultantsService } = require("../services/consultantsService");
 
 const {
@@ -24,33 +23,42 @@ function consultantController(app) {
 
     })
 
-    router.get( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'),  function(req, res, next){
+    router.get( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'),
+                                        async function(req, res, next){
         const { consultantId } = req.params;
 
         const consultant = consultantsService.getConsultantById(consultantId)
-            .then(row => row.length > 0 ? res.status(200).json({
-                data: row
-            }): res.status(200).json({
-                message: "Consultant id does not exist"
-            }))
+            .then(row => {
+                res.status(200).json({
+                    message: "Consultant gets successfully",
+                    data: row,
+                })
+            })
             .catch(err => next(err));
 
     })
 
-    router.post( "/" , validationHandler(createConsultantSchema) , function(req, res, next){
+    router.post( "/" , validationHandler(createConsultantSchema),
+                            async function(req, res, next){
         const { body: consultant } = req;
+        consultant.photo = req.files.photo.path;
 
         const createdConsultant = consultantsService.createConsultant({consultant})
-            .then(row => res.status(201).json({
-                message: "Consultant created successfully"
-            }) )
+            .then(row => {
+                res.send(consultant)
+            } )
             .catch(err => next(err));
 
     })
 
-    router.put( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'), validationHandler(updateConsultantSchema) , function(req, res, next){
+    router.put( "/:consultantId"   , validationHandler({consultantId:consultantIdSchema}, 'params')
+                                        , validationHandler(updateConsultantSchema)
+                                        , async function(req, res, next){
         const { consultantId } = req.params;
         const { body: consultant } = req;
+        if(consultant.photo !== undefined){
+            consultant.photo = req.files.photo.path;
+        }
 
         const updatedConsultant = consultantsService.updateConsultant(consultantId, { consultant })
             .then(row => res.status(202).json({
@@ -61,7 +69,7 @@ function consultantController(app) {
 
     })
 
-    router.delete("/:consultantId", validationHandler({consultantId: consultantIdSchema}, 'params'), function(req,res,next){
+    router.delete("/:consultantId", validationHandler({consultantId: consultantIdSchema}, 'params'),async function(req,res,next){
        const { consultantId } = req.params;
 
        const deletedConsultant = consultantsService.deleteConsultant(consultantId)
