@@ -1,6 +1,7 @@
 const express = require("express");
 const upload = require("../config/multer.config");
 const { ConsultantsService } = require("../services/consultantsService");
+const _encryptor = require('simple-encryptor')('secret_server_key');
 
 const {
     consultantIdSchema,
@@ -16,27 +17,66 @@ function consultantController(app) {
 
     const consultantsService = new ConsultantsService();
 
-    router.get( "/" , async function(req, res, next){
-        const consultants = consultantsService.getConsultants()
-            .then(rows => res.json(rows) )
+    router.post( "/crearConsulta" , upload.single('fotoConsulta'), async function(req, res, next){
+        console.log(req.body)
+        // console.log('va aqui', req.file)
+        let metadata = JSON.parse(req.body.metadata);
+        let id_usuario = _encryptor.decrypt(metadata.id_persona);
+        let tituloConsulta = req.body.tituloConsulta;
+        let descripcionConsulta = req.body.descripcionConsulta;
+        let especialidad = parseInt(req.body.especialidad);
+        let precio = parseFloat(req.body.precioConsulta);
+        let fotoConsulta = req.file.filename;
+
+        let obj = {
+            id_usuario,
+            tituloConsulta,
+            descripcionConsulta,
+            especialidad,
+            precio,
+            fotoConsulta
+        };
+
+        console.log(obj);
+        const consultants = consultantsService.createConsultant(obj)
+            .then(rows =>{
+
+                res.json(rows) 
+            } )
             .catch(err => next(err));
 
     })
 
-    router.get( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'),
-                                        async function(req, res, next){
-        const { consultantId } = req.params;
+    router.get('/getConsultasByAsesor', async function (req,res){
+        try{
+            console.log(req.query)
+            let id_persona = req.query.id_persona;
+            id_persona = _encryptor.decrypt(id_persona.replace(/ /g, '+'));
+            console.log(id_persona);
 
-        const consultant = consultantsService.getConsultantById(consultantId)
-            .then(row => {
-                res.status(200).json({
-                    message: "Consultant gets successfully",
-                    data: row,
-                })
-            })
-            .catch(err => next(err));
+            const consultants = await consultantsService.getConsultasByAsesor(id_persona);
+        } catch(err){
 
+        }
+      
     })
+
+    // router.get( "/:consultantId" ,validationHandler({consultantId: consultantIdSchema},'params'),
+    //                                     async function(req, res, next){
+    //     const { consultantId } = req.params;
+
+    //     const consultant = consultantsService.getConsultantById(consultantId)
+    //         .then(row => {
+    //             res.status(200).json({
+    //                 message: "Consultant gets successfully",
+    //                 data: row,
+    //             })
+    //         })
+    //         .catch(err => next(err));
+
+    // })
+
+    
 
     router.post( "/" , validationHandler(createConsultantSchema),
                             async function(req, res, next){

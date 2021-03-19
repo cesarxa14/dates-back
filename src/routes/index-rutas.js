@@ -3,6 +3,8 @@ const router = Router();
 const Auth = require('../auth/index-auth')
 const controller = require('../controller/index-controller');
 const consultantController = require('../controller/consultantController');
+// const upload = require('../config/multer.config');
+
 
 
 router.post('/login', controller.login);
@@ -12,6 +14,7 @@ router.get('/verifyEmail/:token', controller.verificarTokenEmail);
 
 router.get('/getRoles', controller.getRoles);
 router.get('/getEspecialidades', controller.getEspecialidades);
+
 
 router.post('/switchedAsesorOnline', controller.switchedAsesorOnline);
 

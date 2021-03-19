@@ -2,6 +2,7 @@ const express = require('express');
 const db = require('./src/db/index-bd');
 const cors = require('cors');
 const formData = require("express-form-data");
+const path = require('path');
 const os = require("os");
 const { consultantController } = require("./src/controller/consultantController");
 const { logErrors, wrapError, errorHandler } = require('./src/utils/middleware/errorHandlers');
@@ -24,8 +25,10 @@ app.set('port', process.env.PORT || 3000);
 app.use(express.json());
 
 
+app.use('/upload', express.static(path.resolve('upload')));
+
 // parse data with connect-multiparty.
-app.use(formData.parse(options));
+// app.use(formData.parse(options));
 // delete from the request all empty files (size == 0)
 //app.use(formData.format());
 // change the file objects to fs.ReadStream
