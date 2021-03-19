@@ -3,9 +3,9 @@ const db = require('./src/db/index-bd');
 const cors = require('cors');
 const formData = require("express-form-data");
 const os = require("os");
-const { consultantController } = require("./src/controller/consultantController");
 const { logErrors, wrapError, errorHandler } = require('./src/utils/middleware/errorHandlers');
 const { notFoundHandler } = require('./src/utils/middleware/notFoundHandler');
+const { api } = require('./src/routes/index-rutas')
 const options = {
     uploadDir: './public/uploads',
     //autoClean: true
@@ -34,8 +34,8 @@ app.use(formData.parse(options));
 app.use(formData.union());
 
 //usamos el archivo index-routes.js donde estaran todas las routes
-app.use(require('./src/routes/index-rutas'));
-consultantController(app);
+//app.use(require('./src/routes/index-rutas')); //Lo comente para que no me de errores
+api(app);
 
 // Catch 404
 app.use(notFoundHandler);
