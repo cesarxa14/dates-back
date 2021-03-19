@@ -11,25 +11,22 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@hapi/boom": "^9.1.1",
     "body-parser": "^1.19.0",
     "cors": "^2.8.5",
     "dotenv-flow": "^3.2.0",
     "express": "^4.17.1",
     "express-form-data": "^2.0.14",
-    "googleapis": "^67.1.1",
-    "joi": "^17.4.0",
+    "googleapis": "^68.0.0",
     "jsonwebtoken": "^8.5.1",
-    "nodemailer": "^6.5.0",
     "pg": "^8.5.1",
-    "pg-hstore": "^2.3.3",
-    "pg-promise": "^10.9.4",
-    "simple-encryptor": "^4.0.0",
-    "uuidv4": "^6.2.6"
+    "pg-promise": "^10.9.4"
   },
   "devDependencies": {
-    "get-stream": "^6.0.0",
+    "@hapi/boom": "^9.1.2",
+    "joi": "^17.4.0",
+    "nodemailer": "^6.5.0",
     "nodemon": "^2.0.7",
-    "sequelize": "^6.5.1"
+    "simple-encryptor": "^4.0.0",
+    "uuidv4": "^6.2.6"
   }
 }
