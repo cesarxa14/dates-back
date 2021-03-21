@@ -5,7 +5,7 @@ const formData = require("express-form-data");
 const os = require("os");
 const { logErrors, wrapError, errorHandler } = require('./src/utils/middleware/errorHandlers');
 const { notFoundHandler } = require('./src/utils/middleware/notFoundHandler');
-const { api } = require('./src/routes/index-rutas')
+const { indexRoutes } = require('./src/routes/index-rutas')
 const options = {
     uploadDir: './public/uploads',
     //autoClean: true
@@ -25,17 +25,18 @@ app.use(express.json());
 
 
 // parse data with connect-multiparty.
-app.use(formData.parse(options));
+// app.use(formData.parse(options));
 // delete from the request all empty files (size == 0)
 //app.use(formData.format());
 // change the file objects to fs.ReadStream
 //app.use(formData.stream());
 // union the body and the files
-app.use(formData.union());
+// app.use(formData.union());
 
 //usamos el archivo index-routes.js donde estaran todas las routes
 //app.use(require('./src/routes/index-rutas')); //Lo comente para que no me de errores
-api(app);
+// api(app);
+indexRoutes(app);
 
 // Catch 404
 app.use(notFoundHandler);

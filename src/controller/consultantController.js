@@ -1,4 +1,5 @@
 const { ConsultantsService } = require("../services/consultantsService");
+const _encryptor = require('simple-encryptor')('secret_server_key');
 
 class ConsultantController {
     constructor() {
@@ -41,8 +42,51 @@ class ConsultantController {
             .catch(err => next(err));
     }
 
+    getConsultasByAsesor = async (req, res) =>{
+        try{
+            const consults = await this.consultantsService.getConsultasByAsesor();
+            consults.map(row=>{
+                row._id_persona = _encryptor.encrypt(row._id_persona);
+                row.id_consulta = _encryptor.encrypt(row.id_consulta);
+            })
+            // console.log('holis',consults);
+            res.status(200).send(consults);
+
+        } catch(err) {
+
+        }
+    }
+
     crearConsulta = async (req,res,next) =>{
-        
+            try{
+                console.log(req.body)
+                // console.log('va aqui', req.file)
+                let metadata = JSON.parse(req.body.metadata);
+                let id_usuario = _encryptor.decrypt(metadata.id_persona);
+                let tituloConsulta = req.body.tituloConsulta;
+                let descripcionConsulta = req.body.descripcionConsulta;
+                let especialidad = parseInt(req.body.especialidad);
+                let precio = parseFloat(req.body.precioConsulta);
+                let fotoConsulta = req.file.filename;
+
+                let obj = {
+                    id_usuario,
+                    tituloConsulta,
+                    descripcionConsulta,
+                    especialidad,
+                    precio,
+                    fotoConsulta
+                };
+
+                console.log(obj);
+                const consultants = this.consultantsService.createConsultant(obj)
+                    .then(rows =>{
+                        res.json(rows) 
+                    } )
+                    .catch(err => next(err));
+            } catch(err){
+
+            }
     }
 
     updateConsultantById = async (req, res, next) => {
