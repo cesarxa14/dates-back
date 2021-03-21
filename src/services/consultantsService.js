@@ -18,20 +18,19 @@ class ConsultantsService {
         return consultant;
     }
 
-    // async createConsultant({ consultant }) {
-    //     const query = `INSERT INTO public.consulta(_id_persona, titulo, descripcion, _id_especialidad, foto_consulta, monto) VALUES (${consultant.idPerson}, '${consultant.title}', '${consultant.description}', ${consultant.specialityId}, '${consultant.photo}', ${consultant.price});`;
-    //     const createdConsultant = global.dbp.any(query);
+     async createConsultant({ consultant }) {
+         const query = `INSERT INTO public.consulta(_id_persona, titulo, descripcion, _id_especialidad, foto_consulta, monto) VALUES (${consultant.idPerson}, '${consultant.title}', '${consultant.description}', ${consultant.specialityId}, '${consultant.photo}', ${consultant.price});`;
+         const createdConsultant = global.dbp.any(query);
 
-    //     return createdConsultant;
-    // }
+         return createdConsultant;
+     }
 
-    createConsultant(obj) {
+    createConsultant02(consultant) {
         return new Promise(async (resolve, reject)=>{
             let sql = 'SELECT public.__dates_3_crear_consulta($1, $2, $3, $4, $5, $6) res';
-            sql = await global.pgp.as.format(sql,[obj.id_usuario, obj.tituloConsulta, obj.descripcionConsulta, obj.especialidad, obj.precio, obj.fotoConsulta]);
+            sql = await global.pgp.as.format(sql,[consultant.idPerson, consultant.title, consultant.description, consultant.specialityId, consultant.photo, consultant.price]);
             console.log('sql->>>', sql);
             global.dbp.one(sql).then(data=>{
-                // console.log(data.res)
                 return resolve(data.res);
             }).catch(err => {
                 err.detalle = new Error().stack;
@@ -41,7 +40,7 @@ class ConsultantsService {
         })
     }
 
-    getConsultasByAsesor(){
+    getConsultantsByAdviser(){
         return new Promise(async (resolve, reject)=>{
             let sql = 'SELECT * FROM consulta';
             sql = await global.pgp.as.format(sql);

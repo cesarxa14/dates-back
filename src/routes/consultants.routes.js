@@ -2,7 +2,6 @@ const express = require('express');
 const router = express.Router();
 const { ConsultantController } = require('../controller/consultantController');
 const {validationHandler} = require("../utils/middleware/validationHandler");
-const upload = require('../config/multer.config');
 const {
     consultantIdSchema,
     createConsultantSchema,
@@ -16,21 +15,21 @@ function apiConsultants(app) {
     const consultantController = new ConsultantController();
 
     //Rutas de Consultas
-    router.get( "/getConsultasByAsesor", consultantController.getConsultasByAsesor);
+    router.get( "/getConsultantsByIdAdviser", consultantController.getConsultantByAdviser);
 
-    router.post('/crearConsulta', upload.single('fotoConsulta'), consultantController.crearConsulta);
-
-    router.get( "/consultants/:consultantId"    , validationHandler({consultantId: consultantIdSchema},'params')
+    router.get( "/:consultantId"    , validationHandler({consultantId: consultantIdSchema},'params')
                                                      , consultantController.getConsultantById);
 
-    router.post("/consultants"                  , validationHandler(createConsultantSchema)
-                                                     , consultantController.createConsultant);
+    router.get("/", consultantController.getAllConsultants);
 
-    router.put("/consultants/:consultantId"     , validationHandler({consultantId: consultantIdSchema},'params')
+    router.post("/"                  , validationHandler(createConsultantSchema)
+                                                     ,consultantController.createConsultant);
+
+    router.put("/:consultantId"     , validationHandler({consultantId: consultantIdSchema},'params')
                                                      , validationHandler(updateConsultantSchema)
                                                      , consultantController.updateConsultantById);
 
-    router.delete("/consultants/:consultantId"   , validationHandler({consultantId: consultantIdSchema},'params')
+    router.delete("/:consultantId"   , validationHandler({consultantId: consultantIdSchema},'params')
                                                      , consultantController.deleteConsultantById);
 }
 

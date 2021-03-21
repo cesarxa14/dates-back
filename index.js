@@ -26,15 +26,14 @@ app.set('port', process.env.PORT || 3000);
 //Agregamos handler para recibir json
 app.use(express.json());
 
-
 // parse data with connect-multiparty.
-// app.use(formData.parse(options));
+app.use(formData.parse(options));
 // delete from the request all empty files (size == 0)
 //app.use(formData.format());
 // change the file objects to fs.ReadStream
 //app.use(formData.stream());
 // union the body and the files
-// app.use(formData.union());
+ app.use(formData.union());
 
 //usamos el archivo index-routes.js donde estaran todas las routes
 //app.use(require('./src/routes/index-rutas')); //Lo comente para que no me de errores
