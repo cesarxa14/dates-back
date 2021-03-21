@@ -14,7 +14,7 @@ class ConsultantController {
 
 
     getAllConsultants = async (req, res, next) => {
-        const consultants = this.consultantsService.getConsultants()
+        const consultants = await this.consultantsService.getConsultants()
             .then(rows => res.json(rows) )
             .catch(err => next(err));
     }
@@ -42,22 +42,18 @@ class ConsultantController {
             .catch(err => next(err));
     }
 
-    getConsultasByAsesor = async (req, res) =>{
-        try{
-            const consults = await this.consultantsService.getConsultasByAsesor();
-            consults.map(row=>{
-                row._id_persona = _encryptor.encrypt(row._id_persona);
-                row.id_consulta = _encryptor.encrypt(row.id_consulta);
-            })
-            // console.log('holis',consults);
-            res.status(200).send(consults);
-
-        } catch(err) {
-
-        }
+    getConsultantByAdviser = async (req, res, next) => {
+            const consults = await this.consultantsService.getConsultantsByAdviser()
+                .then(data => {
+                    data.map(row=>{
+                        row._id_persona = _encryptor.encrypt(row._id_persona);
+                        row.id_consulta = _encryptor.encrypt(row.id_consulta);
+                    })
+                    res.status(200).send(data);
+                }).catch(err => next(err))
     }
 
-    crearConsulta = async (req,res,next) =>{
+    createConsults02 = async (req,res,next) =>{
             try{
                 console.log(req.body)
                 // console.log('va aqui', req.file)
@@ -79,9 +75,9 @@ class ConsultantController {
                 };
 
                 console.log(obj);
-                const consultants = this.consultantsService.createConsultant(obj)
+                const consultants = this.consultantsService.createConsultant02(obj)
                     .then(rows =>{
-                        res.json(rows) 
+                        res.json(rows)
                     } )
                     .catch(err => next(err));
             } catch(err){
