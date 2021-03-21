@@ -5,6 +5,7 @@ const controller = require('../controller/index-controller');
 const { ConsultantController } = require('../controller/consultantController');
 const express = require("express");
 const {validationHandler} = require("../utils/middleware/validationHandler");
+const fdf = require('../config/multer.config');
 const {
     consultantIdSchema,
     createConsultantSchema,

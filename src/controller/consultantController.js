@@ -10,6 +10,8 @@ class ConsultantController {
         this.deleteConsultantById = this.deleteConsultantById.bind(this);
     }
 
+
+
     getAllConsultants = async (req, res, next) => {
         const consultants = this.consultantsService.getConsultants()
             .then(rows => res.json(rows) )
@@ -37,6 +39,10 @@ class ConsultantController {
                 res.send(consultant)
             } )
             .catch(err => next(err));
+    }
+
+    crearConsulta = async (req,res,next) =>{
+        
     }
 
     updateConsultantById = async (req, res, next) => {
