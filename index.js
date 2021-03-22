@@ -5,7 +5,8 @@ const formData = require("express-form-data");
 const os = require("os");
 const { logErrors, wrapError, errorHandler } = require('./src/utils/middleware/errorHandlers');
 const { notFoundHandler } = require('./src/utils/middleware/notFoundHandler');
-const { indexRoutes } = require('./src/routes/index-rutas')
+const { indexRoutes } = require('./src/routes/index-rutas');
+const path = require('path');
 const options = {
     uploadDir: './public/uploads',
     //autoClean: true
@@ -17,6 +18,8 @@ const app = express();
 //primero nos conectamos a la base de datos
 db.connectDB();
 app.use(cors());
+
+app.use('/upload', express.static(path.resolve('public/uploads')));
 
 //declaramos 'port' como variable con valor 3000 por defecto
 app.set('port', process.env.PORT || 3000);

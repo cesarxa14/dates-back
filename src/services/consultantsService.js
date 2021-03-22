@@ -28,7 +28,7 @@ class ConsultantsService {
     createConsultant02(consultant) {
         return new Promise(async (resolve, reject)=>{
             let sql = 'SELECT public.__dates_3_crear_consulta($1, $2, $3, $4, $5, $6) res';
-            sql = await global.pgp.as.format(sql,[consultant.idPerson, consultant.title, consultant.description, consultant.specialityId, consultant.photo, consultant.price]);
+            sql = await global.pgp.as.format(sql,[consultant.idPerson, consultant.title, consultant.description, consultant.specialityId, consultant.price, consultant.fotoConsulta]);
             console.log('sql->>>', sql);
             global.dbp.one(sql).then(data=>{
                 return resolve(data.res);
@@ -40,10 +40,10 @@ class ConsultantsService {
         })
     }
 
-    getConsultantsByAdviser(){
+    getConsultantsByIdAdviser(id_persona){
         return new Promise(async (resolve, reject)=>{
-            let sql = 'SELECT * FROM consulta';
-            sql = await global.pgp.as.format(sql);
+            let sql = 'SELECT * FROM consulta WHERE _id_persona = $1';
+            sql = await global.pgp.as.format(sql, [id_persona]);
             console.log('sql->>>', sql);
             global.dbp.any(sql).then(data=>{
                 // console.log(dat)

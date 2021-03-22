@@ -40,15 +40,22 @@ class ConsultantController {
             .catch(err => next(err));
     }
 
-    getConsultantByAdviser = async (req, res, next) => {
-            const consults = await this.consultantsService.getConsultantsByAdviser()
-                .then(data => {
-                    data.map(row=>{
-                        row._id_persona = _encryptor.encrypt(row._id_persona);
-                        row.id_consulta = _encryptor.encrypt(row.id_consulta);
-                    })
-                    res.status(200).send(data);
-                }).catch(err => next(err))
+    getConsultantsByIdAdviser = async (req, res, next) => {
+
+        // console.log('consultanst',req.query)
+        let id_persona = req.query.id_persona;
+        id_persona = _encryptor.decrypt(id_persona);
+        // console.log(id_persona)
+
+        const consults = await this.consultantsService.getConsultantsByIdAdviser(id_persona)
+            .then(data => {
+                data.map(row=>{
+                    row._id_persona = _encryptor.encrypt(row._id_persona);
+                    row.id_consulta = _encryptor.encrypt(row.id_consulta);
+                })
+                console.log(data)
+                res.status(200).send(data);
+            }).catch(err => next(err))
     }
 
     createConsults02 = async (req,res,next) =>{
@@ -56,25 +63,28 @@ class ConsultantController {
                 console.log(req.body)
                 // console.log('va aqui', req.file)
                 let metadata = JSON.parse(req.body.metadata);
-                let id_usuario = _encryptor.decrypt(metadata.id_persona);
-                let tituloConsulta = req.body.tituloConsulta;
-                let descripcionConsulta = req.body.descripcionConsulta;
-                let especialidad = parseInt(req.body.especialidad);
-                let precio = parseFloat(req.body.precioConsulta);
-                let fotoConsulta = req.file.filename;
+                let idPerson = _encryptor.decrypt(metadata.id_persona);
+                let title = req.body.tituloConsulta;
+                let description = req.body.descripcionConsulta;
+                let specialityId = parseInt(req.body.especialidad);
+                let price = parseFloat(req.body.precioConsulta);
+                // let fotoConsulta = req.file.filename;
+                let fotoConsulta = req.body.fotoConsulta.path;
+                fotoConsulta = fotoConsulta.split('\\')[2];
 
                 let obj = {
-                    id_usuario,
-                    tituloConsulta,
-                    descripcionConsulta,
-                    especialidad,
-                    precio,
+                    idPerson,
+                    title,
+                    description,
+                    specialityId,
+                    price,
                     fotoConsulta
                 };
 
                 console.log(obj);
                 const consultants = this.consultantsService.createConsultant02(obj)
                     .then(rows =>{
+                        console.log('consultants', rows);
                         res.json(rows)
                     } )
                     .catch(err => next(err));
