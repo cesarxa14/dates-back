@@ -19,7 +19,7 @@ const app = express();
 db.connectDB();
 app.use(cors());
 
-app.use('/upload', express.static(path.resolve('upload')));
+app.use('/upload', express.static(path.resolve('public/uploads')));
 
 //declaramos 'port' como variable con valor 3000 por defecto
 app.set('port', process.env.PORT || 3000);

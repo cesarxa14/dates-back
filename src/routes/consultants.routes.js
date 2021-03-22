@@ -15,7 +15,8 @@ function apiConsultants(app) {
     const consultantController = new ConsultantController();
 
     //Rutas de Consultas
-    router.get( "/getConsultantsByIdAdviser", consultantController.getConsultantByAdviser);
+    router.post('/creatConsultant', consultantController.createConsults02)
+    router.get( "/getConsultantsByIdAdviser", consultantController.getConsultantsByIdAdviser);
 
     router.get( "/:consultantId"    , validationHandler({consultantId: consultantIdSchema},'params')
                                                      , consultantController.getConsultantById);
