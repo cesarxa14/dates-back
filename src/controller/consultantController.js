@@ -11,8 +11,6 @@ class ConsultantController {
         this.deleteConsultantById = this.deleteConsultantById.bind(this);
     }
 
-
-
     getAllConsultants = async (req, res, next) => {
         const consultants = await this.consultantsService.getConsultants()
             .then(rows => res.json(rows) )
