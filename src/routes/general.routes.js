@@ -8,6 +8,7 @@ function apiGeneral(app){
     const generalController = new GeneralController();
 
     router.get('/getEspecialidades', generalController.getEspecialidad);
+    router.post('/switchedAsesorStatus', generalController.switchedAsesorStatus);
 }
 
 module.exports = { apiGeneral }

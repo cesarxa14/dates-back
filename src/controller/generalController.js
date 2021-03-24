@@ -17,6 +17,22 @@ class GeneralController{
     
         }
     }
+
+    switchedAsesorStatus = async(req, res) => {
+        try{
+            console.log(req.body);
+            let id_user = req.body.id_user;
+            let flag_online = req.body.flag_online;
+    
+            id_user = _encryptor.decrypt(id_user);
+            console.log(id_user)
+            const flg_online = await generalService.switchedAsesorStatus(id_user, flag_online);
+            
+            res.send({message:'toggle cambio'})
+        }catch(err){
+            console.log(err);
+        }
+    }
 }
 
 module.exports = {GeneralController}
